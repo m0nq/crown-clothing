@@ -1,6 +1,8 @@
 import { useState } from 'react';
+
 import { createUserDocument } from '../../utils/firebase/firebase.utils';
 import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
+import { FormInput } from '../form-input/form-input.component';
 
 const initialFormFields = {
     displayName: '',
@@ -48,23 +50,37 @@ export const SignUp = () => {
         <>
             <h1>Sign up with your email and password</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="displayName">Display Name</label>
-                <input required type="text" id="displayName" onChange={handleChange} name="displayName"
+                <FormInput label="displayName"
+                    required
+                    type="text"
+                    id="displayName"
+                    onChange={handleChange}
+                    name="displayName"
                     value={displayName}/>
 
-                <label htmlFor="email">Email</label>
-                <input required type="email" id="email" onChange={handleChange} name="email" value={email}/>
+                <FormInput label="email"
+                    required
+                    type="email"
+                    id="email"
+                    onChange={handleChange}
+                    name="email"
+                    value={email}/>
 
-                <label htmlFor="password">Password</label>
-                <input required type="password" id="password" onChange={handleChange} name="password" value={password}/>
+                <FormInput label="password"
+                    required
+                    type="password"
+                    id="password"
+                    onChange={handleChange}
+                    name="password"
+                    value={password}/>
 
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input required
+                <FormInput label="confirm password"
+                    required
                     type="password"
                     id="confirmPassword"
                     onChange={handleChange}
                     name="confirmPassword"
-                    value={confirmPassword}/>
+                    value={password}/>
 
                 <button type="submit">Sign Up</button>
             </form>

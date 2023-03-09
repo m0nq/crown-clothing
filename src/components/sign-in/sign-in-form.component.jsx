@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { useState } from 'react';
+import { UserContext } from '../../contexts/user.context';
 
 import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import { createUserDocument } from '../../utils/firebase/firebase.utils';
@@ -16,10 +18,12 @@ const initialFormFields = {
 export const SignInForm = () => {
     const [formFields, setFormFields] = useState(initialFormFields);
     const { email, password } = formFields;
+    const { setCurrentUser } = useContext(UserContext);
 
     const signInWithGoogle = async () => {
         const { user } = await signInWithGooglePopup();
         const userDocRef = await createUserDocument(user);
+        console.log(userDocRef);
     };
 
     const handleChange = event => {
@@ -36,19 +40,11 @@ export const SignInForm = () => {
         event.preventDefault();
 
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response);
+            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+            setCurrentUser(user);
         } catch (e) {
-            switch (e.code) {
-                case 'auth/wrong-password':
-                    alert('Incorrect password for email.');
-                    break;
-                case 'auth/user-not-found':
-                    alert('No user associated with this email.');
-                    break;
-                default:
-                    console.log(e);
-            }
+            const message = e.code.split('/')[1].split('-').join(' ');
+            alert(message[0].toUpperCase() + message.substring(1));
         }
     };
 

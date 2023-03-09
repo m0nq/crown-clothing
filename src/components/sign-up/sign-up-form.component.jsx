@@ -85,7 +85,7 @@ export const SignUpForm = () => {
                         id="confirmPassword"
                         onChange={handleChange}
                         name="confirmPassword"
-                        value={password}/>
+                        value={confirmPassword}/>
 
                     <Button buttonType="submit">Sign Up</Button>
                 </form>

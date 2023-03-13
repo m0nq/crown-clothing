@@ -32,10 +32,10 @@ export const SignInForm = () => {
         console.log(formFields);
     };
 
-    const resetFormFields = () => {
-        setFormFields(initialFormFields);
-    };
-
+    // const resetFormFields = () => {
+    //     setFormFields(initialFormFields);
+    // };
+    //
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -54,18 +54,18 @@ export const SignInForm = () => {
                 <h2>Already have an account</h2>
                 <span>Sign in with your email and password</span>
                 <form onSubmit={handleSubmit}>
-                    <FormInput label="email"
+                    <FormInput label="sign-in-email"
                         required
                         type="email"
-                        id="email"
+                        id="sign-in-email"
                         onChange={handleChange}
                         name="email"
                         value={email}/>
 
-                    <FormInput label="password"
+                    <FormInput label="sign-in-password"
                         required
                         type="password"
-                        id="password"
+                        id="sign-in-password"
                         onChange={handleChange}
                         name="password"
                         value={password}/>

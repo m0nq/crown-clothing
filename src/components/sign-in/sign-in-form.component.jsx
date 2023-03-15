@@ -1,9 +1,6 @@
-import { useContext } from 'react';
 import { useState } from 'react';
-import { UserContext } from '../../contexts/user.context';
 
 import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
-import { createUserDocument } from '../../utils/firebase/firebase.utils';
 import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
 import { Button } from '../button/button.component';
 import { FormInput } from '../form-input/form-input.component';
@@ -18,34 +15,30 @@ const initialFormFields = {
 export const SignInForm = () => {
     const [formFields, setFormFields] = useState(initialFormFields);
     const { email, password } = formFields;
-    const { setCurrentUser } = useContext(UserContext);
+
+    const resetFormFields = () => {
+        setFormFields(initialFormFields);
+    };
 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        const userDocRef = await createUserDocument(user);
-        console.log(userDocRef);
+        await signInWithGooglePopup();
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            await signInAuthUserWithEmailAndPassword(email, password);
+            resetFormFields();
+        } catch (e) {
+            const message = e.code.split('/')[1].split('-').join(' ');
+            alert(message[0].toUpperCase() + message.substring(1));
+        }
     };
 
     const handleChange = event => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value });
-        console.log(formFields);
-    };
-
-    // const resetFormFields = () => {
-    //     setFormFields(initialFormFields);
-    // };
-    //
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        try {
-            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
-            setCurrentUser(user);
-        } catch (e) {
-            const message = e.code.split('/')[1].split('-').join(' ');
-            alert(message[0].toUpperCase() + message.substring(1));
-        }
     };
 
     return (

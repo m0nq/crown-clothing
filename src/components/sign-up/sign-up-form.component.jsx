@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { useState } from 'react';
-import { UserContext } from '../../contexts/user.context';
 
 import { createUserDocument } from '../../utils/firebase/firebase.utils';
 import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
@@ -20,14 +18,6 @@ export const SignUpForm = () => {
     const [formFields, setFormFields] = useState(initialFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
 
-    const { setCurrentUser } = useContext(UserContext);
-
-    const handleChange = event => {
-        const { name, value } = event.target;
-        setFormFields({ ...formFields, [name]: value });
-        console.log(formFields);
-    };
-
     const resetFormFields = () => {
         setFormFields(initialFormFields);
     };
@@ -36,22 +26,25 @@ export const SignUpForm = () => {
         event.preventDefault();
 
         if (password !== confirmPassword) {
-            alert('Your passwords don\'t match. Try again please');
+            alert('Your passwords don\'t match. Try again');
             return;
         }
 
         try {
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
-            setCurrentUser(user);
             await createUserDocument(user, { displayName });
             resetFormFields();
-            console.log(user);
         } catch (e) {
             if (e.code === 'auth/email-already-in-use') {
-                alert('Cannot create user - email already in use');
+                alert('Cannot create user - one already exists with this email. Try logging in.');
             }
             console.error('Error: user creation encountered an error', e.message);
         }
+    };
+
+    const handleChange = event => {
+        const { name, value } = event.target;
+        setFormFields({ ...formFields, [name]: value });
     };
 
     return (

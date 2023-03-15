@@ -7,6 +7,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { getDoc } from 'firebase/firestore';
@@ -25,25 +26,22 @@ const firebaseConfig = {
 // Initialize Firebase
 initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider({
-    prompt: 'select_account'
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+    prompt: 'select_account',
 });
-
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
 
-export const createUserDocument = async (userAuth, options = { displayName: 'Monk' }) => {
-    if (!userAuth) {
-        return;
-    }
+export const createUserDocument = async (userAuth, options = {}) => {
+    if (!userAuth) return;
 
     const userDocRef = doc(db, 'users', userAuth.uid);
-    // console.log(userDocRef);
+
     const userSnapshot = await getDoc(userDocRef);
-    // console.log(userSnapshot.exists());
 
     if (!userSnapshot.exists()) {
         const { displayName, email } = userAuth;
@@ -65,21 +63,17 @@ export const createUserDocument = async (userAuth, options = { displayName: 'Mon
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-    if (!email || !password) {
-        return;
-    }
+    if (!email || !password) return;
 
     return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
-    if (!email || !password) {
-        return;
-    }
+    if (!email || !password) return;
 
     return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signOutUser = async () => {
-    return await signOut(auth);
-};
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChanged$ = callback => onAuthStateChanged(auth, callback);

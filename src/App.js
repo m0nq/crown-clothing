@@ -1,13 +1,12 @@
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 
+import './categories.styles.scss';
+
 import { Authentication } from './routes/authentication/authentication.component';
 import { Home } from './routes/home/home.component';
 import { Navigation } from './routes/navigation/navigation.component';
-
-import './categories.styles.scss';
-
-const Shop = () => <h1>The shop...</h1>;
+import { Shop } from './routes/shop/shop.component';
 
 const App = () => {
 

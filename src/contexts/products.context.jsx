@@ -14,12 +14,7 @@ export const ProductsProvider = ({ children }) => {
     const value = { products, setProducts };
 
     useEffect(() => {
-        // return onAuthStateChanged$(async user => {
-        //     if (user) {
-        //         await createUserDocument(user);
-        //     }
         setProducts(SHOPDATA);
-        // });
     }, []);
 
     return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;

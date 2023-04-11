@@ -1,8 +1,3 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { CategoriesContext } from '../../contexts/categories.context';
-
 import './category-item.styles.scss';
 
 export const CategoryItem = ({ category: { imageUrl, title } }) => {

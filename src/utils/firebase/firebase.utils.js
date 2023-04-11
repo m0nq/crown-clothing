@@ -12,6 +12,11 @@ import { getFirestore } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { getDoc } from 'firebase/firestore';
 import { setDoc } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
+import { writeBatch } from 'firebase/firestore';
+import { query } from 'firebase/firestore';
+import { getDocs } from 'firebase/firestore';
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,13 +33,36 @@ initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-    prompt: 'select_account',
+    prompt: 'select_account'
 });
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+    objectsToAdd.forEach(obj => {
+        const docRef = doc(collectionRef, obj.title.toLowerCase());
+        batch.set(docRef, obj);
+    });
+    await batch.commit();
+    console.log('Completed batch adding tx');
+};
+
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.reduce((accumulator, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        accumulator[title.toLowerCase()] = items;
+        return accumulator;
+    }, {});
+};
 
 export const createUserDocument = async (userAuth, options = {}) => {
     if (!userAuth) return;

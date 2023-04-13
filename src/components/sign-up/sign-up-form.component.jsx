@@ -85,7 +85,7 @@ export const SignUpForm = () => {
                         name="confirmPassword"
                         value={confirmPassword}/>
 
-                    <Button buttonType="submit">Sign Up</Button>
+                    <Button type="submit" buttonType="base">Sign Up</Button>
                 </form>
             </div>
         </>

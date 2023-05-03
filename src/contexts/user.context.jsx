@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { createContext } from 'react';
+
 import { createUserDocument } from '../utils/firebase/firebase.utils';
 import { onAuthStateChanged$ } from '../utils/firebase/firebase.utils';
 
-// as the actual value you want to access
 export const UserContext = createContext({
-    currentUser: null,
-    setCurrentUser: () => null
+    setCurrentUser: () => null,
+    currentUser: null
 });
 
 export const UserProvider = ({ children }) => {
@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
     const value = { currentUser, setCurrentUser };
 
     useEffect(() => {
-        return onAuthStateChanged$(async user => {
+        return onAuthStateChanged$(async (user) => {
             if (user) {
                 await createUserDocument(user);
             }

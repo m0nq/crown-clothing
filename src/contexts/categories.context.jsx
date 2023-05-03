@@ -14,10 +14,15 @@ export const CategoriesProvider = ({ children }) => {
     useEffect(() => {
         (async () => {
             const categoryMap = await getCategoriesAndDocuments();
-            setCategoriesMap(categoryMap)
+            setCategoriesMap(categoryMap);
         })();
     }, []);
 
     const value = { categoriesMap };
-    return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>;
+
+    return (
+        <CategoriesContext.Provider value={value}>
+            {children}
+        </CategoriesContext.Provider>
+    );
 };

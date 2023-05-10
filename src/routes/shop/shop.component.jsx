@@ -5,6 +5,7 @@ import { CategoriesPreview } from '../categories-preview/categories-preview.comp
 import { Category } from '../category/category.component';
 
 export const Shop = () => {
+
     return (
         <Routes>
             <Route index element={<CategoriesPreview/>}/>

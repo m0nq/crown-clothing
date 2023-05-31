@@ -17,7 +17,6 @@ import { writeBatch } from 'firebase/firestore';
 import { query } from 'firebase/firestore';
 import { getDocs } from 'firebase/firestore';
 
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: 'AIzaSyCRjAARPOSUi4Oa79gW1W9DIAodi-cWOLE',
@@ -57,11 +56,12 @@ export const getCategoriesAndDocuments = async () => {
     const q = query(collectionRef);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.reduce((accumulator, docSnapshot) => {
-        const { title, items } = docSnapshot.data();
-        accumulator[title.toLowerCase()] = items;
-        return accumulator;
-    }, {});
+    return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
+    //     .reduce((accumulator, docSnapshot) => {
+    //     const { title, items } = docSnapshot.data();
+    //     accumulator[title.toLowerCase()] = items;
+    //     return accumulator;
+    // }, {});
 };
 
 export const createUserDocument = async (userAuth, options = {}) => {

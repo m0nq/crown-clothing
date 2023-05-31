@@ -20,9 +20,10 @@ const App = () => {
             if (user) {
                 await createUserDocument(user);
             }
+
             dispatch(setCurrentUser(user));
         });
-    }, []);
+    }, [dispatch]);
 
     return (
         <Routes>
